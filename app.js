@@ -1,25 +1,11 @@
 const main = document.getElementById('main');
 
-// Detect mobile devices
-const isAndroid = /Android/i.test(navigator.userAgent);
-const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-const isMobile = isAndroid || isIOS;
+// Set up PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 function getPdfContent(file, title) {
-  const encodedFile = file.split('/').map(encodeURIComponent).join('/');
-
-  // Android Chrome can't embed PDFs inline well — show a tap-to-open card
-  if (isAndroid) {
-    return `
-      <div class="pdf-mobile-card">
-        <div class="pdf-mobile-icon">📄</div>
-        <p class="pdf-mobile-title">${esc(title)}</p>
-        <a href="${encodedFile}" target="_blank" class="pdf-mobile-btn">Tap to Open PDF ↗</a>
-      </div>`;
-  }
-
-  // iOS Safari + Desktop: native iframe PDF rendering works well
-  return `<iframe src="${encodedFile}" title="${esc(title)}" loading="lazy"></iframe>`;
+  // Use PDF.js for all devices - renders PDFs in a canvas
+  return `<div class="pdf-viewer" data-pdf="${esc(file)}" data-title="${esc(title)}"></div>`;
 }
 
 if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
@@ -54,6 +40,54 @@ if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
     `;
     main.appendChild(section);
   });
+
+  // Render all PDF viewers
+  initPdfViewers();
+}
+
+// Initialize PDF viewers using PDF.js
+async function initPdfViewers() {
+  const viewers = document.querySelectorAll('.pdf-viewer');
+  
+  for (const viewer of viewers) {
+    const pdfFile = viewer.getAttribute('data-pdf');
+    const pdfTitle = viewer.getAttribute('data-title');
+    
+    try {
+      const pdf = await pdfjsLib.getDocument(pdfFile).promise;
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pdf-page';
+      viewer.appendChild(canvas);
+      
+      // Render first page
+      await renderPage(pdf, canvas, 1);
+      
+      // Show page info
+      if (pdf.numPages > 1) {
+        const info = document.createElement('div');
+        info.className = 'pdf-page-info';
+        info.textContent = `Page 1 of ${pdf.numPages}`;
+        viewer.appendChild(info);
+      }
+    } catch (error) {
+      console.error(`Error loading PDF ${pdfFile}:`, error);
+      viewer.innerHTML = `<div class="pdf-error">Error loading PDF</div>`;
+    }
+  }
+}
+
+async function renderPage(pdf, canvas, pageNum) {
+  const page = await pdf.getPage(pageNum);
+  const viewport = page.getViewport({ scale: 2 });
+  const context = canvas.getContext('2d');
+  
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  
+  await page.render({
+    canvasContext: context,
+    viewport: viewport
+  }).promise;
 }
 
 function esc(str) {
