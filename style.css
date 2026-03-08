@@ -24,6 +24,8 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -32,6 +34,11 @@ body {
   color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar {
@@ -250,22 +257,98 @@ body {
 /* ===========================
    Responsive
    =========================== */
+/* Tablet (600px - 960px) */
+@media (max-width: 960px) {
+  .pdf-embed-wrap iframe {
+    height: 70vh;
+  }
+}
+
+/* Mobile (max 600px) */
 @media (max-width: 600px) {
   .header {
     padding: 0 16px;
+    height: 50px;
   }
 
   .main {
-    padding: 24px 14px 60px;
-    gap: 40px;
+    padding: 16px 12px 60px;
+    gap: 30px;
+  }
+
+  .pdf-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pdf-actions {
+    width: 100%;
+  }
+
+  .pdf-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+
+  .pdf-embed-wrap {
+    min-height: 300px;
+    max-height: 50vh;
   }
 
   .pdf-embed-wrap iframe {
-    height: 75vh;
+    height: 100%;
+    min-height: 400px;
+  }
+
+  .pdf-mobile-card {
+    padding: 40px 16px;
+    gap: 12px;
+  }
+
+  .pdf-mobile-icon {
+    font-size: 3rem;
+  }
+
+  .pdf-mobile-title {
+    font-size: 0.9rem;
+  }
+
+  .pdf-mobile-btn {
+    padding: 10px 24px;
+    font-size: 0.9rem;
   }
 
   .pdf-title {
     font-size: 1rem;
+  }
+
+  .pdf-num {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+  }
+}
+
+/* Small phones (max 360px) */
+@media (max-width: 360px) {
+  .main {
+    padding: 12px 8px 40px;
+  }
+
+  .pdf-label-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .pdf-title {
+    font-size: 0.9rem;
+  }
+
+  .pdf-embed-wrap {
+    max-height: 45vh;
   }
 }
 

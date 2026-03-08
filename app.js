@@ -1,14 +1,15 @@
 const main = document.getElementById('main');
 
-// iOS Safari renders PDFs in iframes natively — no workaround needed.
-// Android Chrome cannot embed PDFs inline at all — show an open button instead.
+// Detect mobile devices
 const isAndroid = /Android/i.test(navigator.userAgent);
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const isMobile = isAndroid || isIOS;
 
 function getPdfContent(file, title) {
   const encodedFile = file.split('/').map(encodeURIComponent).join('/');
 
+  // Android Chrome can't embed PDFs inline well — show a tap-to-open card
   if (isAndroid) {
-    // Android Chrome can't embed PDFs — show a styled tap-to-open card
     return `
       <div class="pdf-mobile-card">
         <div class="pdf-mobile-icon">📄</div>
@@ -17,8 +18,8 @@ function getPdfContent(file, title) {
       </div>`;
   }
 
-  // iOS Safari + Desktop: native iframe PDF rendering works fine
-  return `<iframe src="${encodedFile}" title="${esc(title)}"></iframe>`;
+  // iOS Safari + Desktop: native iframe PDF rendering works well
+  return `<iframe src="${encodedFile}" title="${esc(title)}" loading="lazy"></iframe>`;
 }
 
 if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
