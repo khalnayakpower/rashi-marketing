@@ -1,15 +1,24 @@
 const main = document.getElementById('main');
 
-// Mobile browsers (Android & iOS) can't render PDFs inside iframes.
-// On mobile we use Google Docs Viewer, which works on all devices.
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+// iOS Safari renders PDFs in iframes natively — no workaround needed.
+// Android Chrome cannot embed PDFs inline at all — show an open button instead.
+const isAndroid = /Android/i.test(navigator.userAgent);
 
-function getPdfSrc(file) {
-  if (isMobile) {
-    const absoluteUrl = new URL(file, window.location.href).href;
-    return `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true`;
+function getPdfContent(file, title) {
+  const encodedFile = file.split('/').map(encodeURIComponent).join('/');
+
+  if (isAndroid) {
+    // Android Chrome can't embed PDFs — show a styled tap-to-open card
+    return `
+      <div class="pdf-mobile-card">
+        <div class="pdf-mobile-icon">📄</div>
+        <p class="pdf-mobile-title">${esc(title)}</p>
+        <a href="${encodedFile}" target="_blank" class="pdf-mobile-btn">Tap to Open PDF ↗</a>
+      </div>`;
   }
-  return file;
+
+  // iOS Safari + Desktop: native iframe PDF rendering works fine
+  return `<iframe src="${encodedFile}" title="${esc(title)}"></iframe>`;
 }
 
 if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
@@ -22,7 +31,6 @@ if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
 } else {
   PDF_LIBRARY.forEach((pdf, i) => {
     const encodedFile = pdf.file.split('/').map(encodeURIComponent).join('/');
-    const iframeSrc = getPdfSrc(pdf.file);
 
     const section = document.createElement('div');
     section.innerHTML = `
@@ -38,7 +46,7 @@ if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
           </div>
         </div>
         <div class="pdf-embed-wrap">
-          <iframe src="${iframeSrc}" title="${esc(pdf.title)}"></iframe>
+          ${getPdfContent(pdf.file, pdf.title)}
         </div>
       </div>
       ${i < PDF_LIBRARY.length - 1 ? '<div class="pdf-divider"></div>' : ''}

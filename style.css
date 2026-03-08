@@ -204,6 +204,50 @@ body {
 }
 
 /* ===========================
+   Android PDF Fallback Card
+   =========================== */
+.pdf-mobile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.pdf-mobile-icon {
+  font-size: 4rem;
+}
+
+.pdf-mobile-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pdf-mobile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 99px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background var(--trans), transform var(--trans);
+}
+
+.pdf-mobile-btn:hover,
+.pdf-mobile-btn:active {
+  background: var(--accent2);
+  transform: scale(1.03);
+}
+
+/* ===========================
    Responsive
    =========================== */
 @media (max-width: 600px) {
