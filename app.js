@@ -17,6 +17,74 @@ if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
     </div>`;
 } else {
   PDF_LIBRARY.forEach((pdf, i) => {
+    // Handle heading sections
+    if (pdf.type === 'heading') {
+      const section = document.createElement('div');
+      section.innerHTML = `
+        <div class="section-heading">
+          <h1>${esc(pdf.title)}</h1>
+        </div>
+      `;
+      main.appendChild(section);
+      return;
+    }
+
+    // Handle external links (Google Drive, etc)
+    if (pdf.isExternalLink) {
+      const section = document.createElement('div');
+      
+      // For folder links, don't try to embed
+      if (pdf.isFolder) {
+        section.innerHTML = `
+          <div class="pdf-section">
+            <div class="pdf-label">
+              <div class="pdf-label-title">
+                <span class="pdf-num">${i + 1} of ${PDF_LIBRARY.length}</span>
+                <h2 class="pdf-title">${esc(pdf.title)}</h2>
+              </div>
+              <div class="pdf-actions">
+                <a class="pdf-btn" href="${pdf.file}" target="_blank">📁 Open Folder</a>
+              </div>
+            </div>
+            <div class="pdf-embed-wrap folder-message">
+              <p>📂 This is a Google Drive folder containing multiple documents. Click the button above to access all files.</p>
+            </div>
+          </div>
+        `;
+        main.appendChild(section);
+        return;
+      }
+      
+      // For document files, embed them
+      let embedUrl = pdf.file;
+      let downloadUrl = pdf.file;
+      if (pdf.file.includes('drive.google.com/file/d/')) {
+        const fileId = pdf.file.match(/\/d\/([a-zA-Z0-9-_]+)/)[1];
+        embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+        downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+      
+      section.innerHTML = `
+        <div class="pdf-section">
+          <div class="pdf-label">
+            <div class="pdf-label-title">
+              <span class="pdf-num">${i + 1} of ${PDF_LIBRARY.length}</span>
+              <h2 class="pdf-title">${esc(pdf.title)}</h2>
+            </div>
+            <div class="pdf-actions">
+              <a class="pdf-btn" href="${downloadUrl}" download>⬇ Download</a>
+              <a class="pdf-btn" href="${pdf.file}" target="_blank">↗ Open</a>
+            </div>
+          </div>
+          <div class="pdf-embed-wrap">
+            <iframe src="${embedUrl}" class="google-drive-embed" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+      `;
+      main.appendChild(section);
+      return;
+    }
+
     const encodedFile = pdf.file.split('/').map(encodeURIComponent).join('/');
 
     const section = document.createElement('div');
@@ -95,5 +163,5 @@ function esc(str) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;');b
 }
