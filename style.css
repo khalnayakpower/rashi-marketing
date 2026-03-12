@@ -13,8 +13,8 @@
   --bg: #0d0f17;
   --surface: #141720;
   --border: rgba(255, 255, 255, 0.08);
-  --accent: #7c6af7;
-  --accent2: #a78bfa;
+  --accent: #e63946;
+  --accent2: #ff6b6b;
   --text: #e8eaf0;
   --text-muted: #7a7f9a;
   --danger: #ef4444;
@@ -205,12 +205,51 @@ body {
   font-size: 0.95rem;
 }
 
+.external-link-message {
+  text-align: center;
+  padding: 60px 40px;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.google-drive-embed {
+  width: 100%;
+  height: 600px;
+  border: none;
+  border-radius: 8px;
+}
+
+.folder-message {
+  text-align: center;
+  padding: 60px 40px;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 /* Divider */
 .pdf-divider {
   width: 100%;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border), transparent);
   margin-top: 56px;
+}
+
+/* ===========================
+   Section Heading
+   =========================== */
+.section-heading {
+  padding: 60px 0 30px 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.section-heading h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--accent2);
 }
 
 /* ===========================
