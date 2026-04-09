@@ -13,7 +13,7 @@ if (!PDF_LIBRARY || PDF_LIBRARY.length === 0) {
     <div class="empty">
       <div class="empty-icon">📂</div>
       <h2>No Documents Yet</h2>
-      <p>Open <strong>pdfs.js</strong> and add your PDF files to get started.</p>
+      <p>Open <strong>pdfs.js</strong> and add your PDF files to get started.</p>bloodhounds season 2
     </div>`;
 } else {
   PDF_LIBRARY.forEach((pdf, i) => {
