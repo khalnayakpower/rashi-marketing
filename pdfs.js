@@ -112,4 +112,15 @@ const PDF_LIBRARY = [
         file: "https://drive.google.com/file/d/1pXc9hvErZrIj12nrAZ17vTL_fPHxGZtp/view?usp=sharing",
         isExternalLink: true
     },
+     {
+        type: "heading",
+        title: "CABLE AND PIPE SEALING PUTTY"
+
+    },
+    {
+        title: "Cable and Pipe Sealing Putty",
+        file: "https://drive.google.com/file/d/1lFsOLiZWJw7TIcvpKX0scnr-rzzlB85K/view?usp=sharing",
+        isExternalLink: true
+    },
+    
 ]; 
