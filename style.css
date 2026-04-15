@@ -90,6 +90,7 @@ body {
 .hero-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 40px;
   padding: 60px 40px;
   background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
@@ -341,6 +342,69 @@ body {
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--accent2);
+}
+
+/* ===========================
+   Products Section
+   =========================== */
+.products-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.products-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.products-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--accent2);
+  margin-bottom: 8px;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  list-style: none;
+}
+
+.products-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.products-list li::before {
+  content: "●";
+  color: var(--accent);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.products-list a {
+  color: var(--accent2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--trans);
+}
+
+.products-list a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 /* ===========================
